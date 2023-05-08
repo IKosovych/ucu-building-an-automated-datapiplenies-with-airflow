@@ -40,13 +40,10 @@ def pull_weather_data(**kwargs):
 with DAG(dag_id="weather", schedule_interval="@daily", start_date=days_ago(2)) as dag:
 	start = DummyOperator(task_id = 'start')
 	pull_operators = []
-	values = ['Lviv', 'Kyiv']
+	values = ['Lviv', 'Kyiv', 'Kharkiv', 'Odesa', 'Zhmerynka']
 	for counter, city_name in enumerate(values):
-		logging.info("@@@@@@@")
-		logging.info(counter)
-		logging.info(type(counter))
 		python_task = PythonOperator(
-			task_id=f'pull_providers_{counter + 1}',
+			task_id=f'pull_providers_{str(counter + 1)}',
 			python_callable=pull_weather_data,
 			op_kwargs={'city_name': city_name},
 		)
